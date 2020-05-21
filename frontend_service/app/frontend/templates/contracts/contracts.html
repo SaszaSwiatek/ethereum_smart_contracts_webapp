@@ -1,0 +1,34 @@
+{% extends "base_col_1.html" %}
+{% block title %}Contracts{% endblock %}
+
+{% block pageContent %}
+
+
+{% if contracts | length > 0 %}
+    {% for contract in contracts.results %}
+
+    {% set url = "/contract/" +  contract.id|string() %}
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">{{contract.title}}</h2>
+            </div>
+            <div class="panel-body">
+            <div class="panel-default">Initiator - {{contract.user_id}}</div>
+            <div class="panel-default">Contractor - {{contract.contractor_user_id}}</div>
+            <div class="panel-default">Deployed - {{contract.is_deployed}}</div>
+            <div class="panel-default">Finalized - {{contract.is_finalized}}</div>
+            </div>
+            <div class="panel-footer">
+                <a class="btn btn-info" href="{{url}}">View details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+{% else %}
+    <strong>No contract found</strong>
+{% endif %}
+
+{% endblock %}

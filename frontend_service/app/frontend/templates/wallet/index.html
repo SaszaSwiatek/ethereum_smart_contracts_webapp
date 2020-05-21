@@ -1,0 +1,25 @@
+{% extends "base_col_1.html" %}
+{% from "macros/_macros_form.html" import render_field %}
+{% block title %}Wallet page{% endblock %}
+
+{% block pageContent %}
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Etherum</h2>
+            </div>
+            <div class="panel-body">
+            		<div class="panel-default">Account Address: {{wallet_items.eth_address}}</div>
+            		<br>
+                    <div class="panel-default">Balance: {{wallet_items.eth_balance}} ETH</div>
+            </div>
+            <div class="panel-footer">
+            	<div>
+                        <a class="btn btn-info pull-right" href="/wallet">Charge up your account</a>
+                        <a class="btn btn-success" href="/maketranfser">Make a transfer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

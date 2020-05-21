@@ -1,0 +1,42 @@
+  
+pragma solidity ^0.5.1;
+
+contract Template1 {
+  address payable public initiator;
+  address payable public contractor;
+  uint256 public contract_value;
+  uint256 public releaseTime;
+
+  modifier onlyInitiator () {
+    require(msg.sender == initiator);
+    _;
+  }
+
+  constructor(
+    address payable _contractor,
+    uint256 _releaseTime
+  )
+    public
+    payable
+  {
+    initiator = msg.sender;
+    contract_value = msg.value;
+    require(_releaseTime > block.timestamp);
+    contractor = _contractor;
+    releaseTime = _releaseTime;
+    (bool sent, bytes memory data) = address(contractor).call.value((((contract_value * 100)/ 110)*10)/100)("");
+    require(sent, "Failed to send 10% advance Ether");
+  }
+
+  function finalize() public onlyInitiator {
+    if(block.timestamp <= releaseTime) {
+      (bool sent, bytes memory data) = address(contractor).call.value(address(this).balance)("");
+      require(sent, "Failed to send whole conract value Ether to contractor");
+    }else {
+      (bool sent, bytes memory data) = address(contractor).call.value((((contract_value * 100)/ 110)*90)/100)("");
+      require(sent, "Failed to send 90% Ether to contractor");
+      (bool sent2, bytes memory data2) = address(initiator).call.value(address(this).balance)("");
+      require(sent2, "Failed to send remaining Ether to initiator");
+    } 
+  }
+}
